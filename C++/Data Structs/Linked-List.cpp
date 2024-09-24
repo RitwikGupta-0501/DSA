@@ -126,24 +126,37 @@ class LinkedList {
 
         void delete_index(int index) {
             if (this->head == nullptr) {
-               cout << "Linked List is Empty.";
+                cout << "Linked List is Empty." << endl;
+                return;
             }
-            else if (this->head->data == value) {
+
+            // Case 1: Deleting the head node (index == 1)
+            if (index == 1) {
                 this->head = this->head->next;
+                return;
             }
-            else {
-                ListNode* current = this->head;
-                while (current->next != nullptr && current->next->data != value) {
-                    current = current->next;
-                }
-                if (current->next == nullptr) {
-                    cout << "Node not found";
-                }
-                else {
-                    current->next = current->next->next;
-                }
+
+            // Case 2: Deleting a node at a specific index
+            ListNode* current = this->head;
+            int count = 1;
+
+            // Traverse the list to find the node before the target
+            while (current != nullptr && count < index - 1) {
+                current = current->next;
+                count++;
             }
+
+            // If the index is out of bounds
+            if (current == nullptr || current->next == nullptr) {
+                cout << "Index Out of Range." << endl;
+                return;
+            }
+
+            // Delete the node at the given index
+            ListNode* temp = current->next;
+            current->next = current->next->next;
         }
+
 
         void display() {
             ListNode* current = this->head;
@@ -157,6 +170,7 @@ class LinkedList {
                 cout << current->data << ' ';
                 current = current->next;
             }
+            cout << endl;
         }
 };
 
@@ -171,7 +185,8 @@ int main() {
     ListNode n4(4);
     l.insert_at_end(&n4);
     l.display();
-    cout << endl << "Reversed" << endl;
-    l.reverse();
+    l.delete_index(1);
+    l.display();
+    l.delete_index(2);
     l.display();
 }
