@@ -13,6 +13,7 @@ class Deque {
             this->queue = new int[size];
             this->front = -1;
             this->rear = -1;
+            this->size = size;
         }
 
         bool isFull() {
@@ -23,7 +24,7 @@ class Deque {
             return (this->front == -1);
         }
 
-        void enqueue(int element) {
+        void push_back(int element) {
             if (this->isFull()) {
                 cout << "Queue is Full." << endl;
                 return;
@@ -37,7 +38,7 @@ class Deque {
             return;
         }
 
-        int dequeue() {
+        int pop_front() {
             if (this->isEmpty()) {
                 cout << "Queue is Empty. " << endl;
                 return;
@@ -54,6 +55,38 @@ class Deque {
             return element;
         }
 
+        void push_front(int element) {
+            if (this->isFull()) {
+                cout << "Queue is Full." << endl;
+                return;
+            }
+            
+            if (this->front == -1) {
+                this->front = 0;
+                this->rear = 0;
+            }
+            else if (this->front == 0) this->front = this->size-1;
+            else this->front--;
+            this->queue[this->front] = element;
+            return;
+        }
+
+        int pop_back() {
+            if (this->isEmpty()) {
+                cout << "Queue is Empty. " << endl;
+                return;
+            }
+
+            int element = this->queue[this->rear];
+            if (this->front == this->rear) {
+                this->front = -1;
+                this->rear = -1;
+            }
+            else if (this->rear == 0) this->rear = this->size-1;
+            else this->rear--;
+            return element;
+        }
+
         void display() {
             if (this->isEmpty()) cout << "Queue is Empty." << endl;
             else {
@@ -61,7 +94,7 @@ class Deque {
                 for (i=this->front; i != this->rear; i = (i+1) % this->size) {
                     cout << this->queue[i] << " ";
                 }
-                cout << this->queue[i];
+                cout << this->queue[i] <<  endl;
             }
             return;
         }
