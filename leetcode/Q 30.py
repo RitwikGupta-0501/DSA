@@ -62,3 +62,46 @@ class Solution:
                 j = i
                 total = 0
         return result
+
+
+# Final Solution
+from collections import Counter
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        n = len(s)
+        k = len(words)
+        m = len(words[0])
+        dhm = Counter(words)
+        result = list()
+
+        if n < m * len(words):
+            return []
+
+        for start_index in range(m):
+            i = start_index
+            j = i
+            hm = dhm.copy()
+            matched = 0
+            while j + m <= n:
+                new_word = s[j : j + m]
+
+                if new_word in words:
+                    if hm[new_word] > 0:
+                        hm[new_word] -= 1
+                        matched += 1
+                    else:
+                        while s[i : i + m] != new_word:
+                            hm[s[i : i + m]] += 1
+                            matched -= 1
+                            i += m
+                        i += m
+                else:
+                    hm = dhm.copy()
+                    matched = 0
+                    i = j + m
+
+                if matched == k:
+                    result.append(i)
+
+                j += m
+        return result
